@@ -26,13 +26,13 @@ export const Title = styled.h1`
   font-size: 3rem;
   line-height: 130%;
   font-weight: 800;
-  color: ${(props) => props.theme["black-400"]};
+  color: ${(props) => props.theme["base-title"]};
 `;
 
 export const Subtitle = styled.span`
   font-size: 1.25rem;
   line-height: 130%;
-  color: ${(props) => props.theme["black-300"]};
+  color: ${(props) => props.theme["base-subtitle"]};
   margin-top: 1rem;
 `;
 
@@ -56,10 +56,10 @@ export const Item = styled.div`
 `;
 
 const ITEM_COLOR = {
-  orange: "yellow-300",
-  yellow: "yellow-200",
-  black: "black-200",
-  purple: "purple-200",
+  orange: "yellow-dark",
+  yellow: "yellow",
+  black: "base-text",
+  purple: "purple",
 } as const;
 
 interface ItemIconProps {
@@ -77,5 +77,5 @@ export const ItemIcon = styled.span<ItemIconProps>`
 export const ItemText = styled.span`
   font-size: 1rem;
   line-height: 130%;
-  color: ${(props) => props.theme["black-200"]};
+  color: ${(props) => props.theme["base-text"]};
 `;

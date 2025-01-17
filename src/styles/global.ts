@@ -8,7 +8,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body{
-        background: ${(props) => props.theme["base-label"]};
+        background: ${(props) => props.theme["background"]};
         --webkit-font-smoothing: antialiased;
     }
 

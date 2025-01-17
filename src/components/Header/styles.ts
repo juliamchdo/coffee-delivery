@@ -22,11 +22,11 @@ export const LocationBadge = styled(BaseBadge)`
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  background: ${(props) => props.theme["purple-100"]};
-  color: ${(props) => props.theme["purple-300"]};
+  background: ${(props) => props.theme["purple-light"]};
+  color: ${(props) => props.theme["purple-dark"]};
 `;
 
 export const CartBadge = styled(BaseBadge)`
-  background: ${(props) => props.theme["yellow-100"]};
-  color: ${(props) => props.theme["yellow-300"]};
+  background: ${(props) => props.theme["yellow-light"]};
+  color: ${(props) => props.theme["yellow-dark"]};
 `;
