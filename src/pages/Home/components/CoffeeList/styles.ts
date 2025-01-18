@@ -7,6 +7,7 @@ export const CoffeeContainer = styled.div`
   justify-content: center;
 
   width: 100%;
+  padding: 0 5rem;
   margin-top: 9.375rem;
 `;
 
@@ -43,6 +44,13 @@ export const Image = styled.div`
   justify-content: center;
 
   margin-top: calc(0px - 1.5rem - 15px);
+`;
+
+export const TagGroup = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
 `;
 
 export const Tag = styled.span`
