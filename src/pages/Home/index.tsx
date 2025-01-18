@@ -13,6 +13,7 @@ import {
 import { ShoppingCart, Package, Timer, Coffee } from "@phosphor-icons/react";
 
 import CoffeeCup from "../../assets/coffee-cup.png";
+import { CoffeeList } from "./components/CoffeeList";
 
 export function Home() {
   return (
@@ -27,28 +28,28 @@ export function Home() {
 
           <ItensGroup>
             <Item>
-              <ItemIcon itemColor="orange">
+              <ItemIcon color="orange">
                 <ShoppingCart size={20} weight="fill" />
               </ItemIcon>
               <ItemText>Compra simples e segura</ItemText>
             </Item>
 
             <Item>
-              <ItemIcon itemColor="black">
+              <ItemIcon color="black">
                 <Package size={20} weight="fill" />
               </ItemIcon>
               <ItemText>Embalagem mantém o café intacto</ItemText>
             </Item>
 
             <Item>
-              <ItemIcon itemColor="yellow">
+              <ItemIcon color="yellow">
                 <Timer size={20} weight="fill" />
               </ItemIcon>
               <ItemText>Entrega rápida e rastreada</ItemText>
             </Item>
 
             <Item>
-              <ItemIcon itemColor="purple">
+              <ItemIcon color="purple">
                 <Coffee size={20} weight="fill" />
               </ItemIcon>
               <ItemText>O café chega fresquinho até você</ItemText>
@@ -58,6 +59,7 @@ export function Home() {
 
         <img src={CoffeeCup} alt="Coffee Delivery Cup" />
       </Banner>
+      <CoffeeList />
     </HomeContainer>
   );
 }

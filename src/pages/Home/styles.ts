@@ -63,7 +63,7 @@ const ITEM_COLOR = {
 } as const;
 
 interface ItemIconProps {
-  itemColor: keyof typeof ITEM_COLOR;
+  color: keyof typeof ITEM_COLOR;
 }
 
 export const ItemIcon = styled.span<ItemIconProps>`
@@ -71,7 +71,7 @@ export const ItemIcon = styled.span<ItemIconProps>`
   padding: 0.5rem;
   line-height: 0;
   color: ${(props) => props.theme["white"]};
-  background: ${(props) => props.theme[ITEM_COLOR[props.itemColor]]};
+  background: ${(props) => props.theme[ITEM_COLOR[props.color]]};
 `;
 
 export const ItemText = styled.span`
