@@ -7,6 +7,9 @@ type CoffeeWithQuantity = Coffee & { quantity: number };
 
 export function CoffeeList() {
   const [coffeeList, SetCoffeeList] = useState<CoffeeWithQuantity[]>([]);
+  const [selectedCoffee, setSelectedCoffee] = useState<CoffeeWithQuantity[]>(
+    []
+  );
   const { updateQuantity } = useContext(CartContext);
 
   useEffect(() => {
@@ -17,7 +20,7 @@ export function CoffeeList() {
     SetCoffeeList(initialCoffeeList);
   }, []);
 
-  const updateCoffeeQuantity = (
+  const handleCoffeeQuantity = (
     selectedCoffee: CoffeeWithQuantity,
     amount: number
   ) => {
@@ -33,9 +36,24 @@ export function CoffeeList() {
     );
   };
 
-  const updateCartQuantity = () => {
+  const handleCartItems = (coffee: CoffeeWithQuantity) => {
     updateQuantity(coffeeList.reduce((acc, curr) => acc + curr.quantity, 0));
+
+    setSelectedCoffee((prev) => {
+      const exists = prev.some((c) => c.id === coffee.id);
+      if (exists) {
+        return prev.map((c) => (c.id === coffee.id ? coffee : c));
+      }
+      return [...prev, coffee];
+    });
   };
+
+  useEffect(() => {
+    localStorage.setItem(
+      "@coffee-delivery:selected-coffee-list",
+      JSON.stringify(selectedCoffee)
+    );
+  }, [selectedCoffee]);
 
   return (
     <Container>
@@ -47,9 +65,9 @@ export function CoffeeList() {
             return (
               <CoffeeCard
                 coffee={coffee}
-                increment={() => updateCoffeeQuantity(coffee, 1)}
-                decrement={() => updateCoffeeQuantity(coffee, -1)}
-                updateCartQuantity={updateCartQuantity}
+                increment={() => handleCoffeeQuantity(coffee, 1)}
+                decrement={() => handleCoffeeQuantity(coffee, -1)}
+                updateCartQuantity={() => handleCartItems(coffee)}
                 key={coffee.id}
               />
             );
