@@ -2,10 +2,8 @@ import {
   ActionsGroup,
   Card,
   Cart,
-  CoffeeContainer,
+  Container,
   CoffeeGroup,
-  Counter,
-  CounterButton,
   Currency,
   Description,
   Image,
@@ -17,9 +15,10 @@ import {
   Value,
   TagGroup,
 } from "./styles";
-import { Minus, Plus, ShoppingCart } from "@phosphor-icons/react";
+import { ShoppingCart } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
-import { CoffeeOptions, Coffee } from "../../../../mocks/coffe-mock";
+import { CoffeeOptions, Coffee } from "../../../../services/coffee";
+import { QuantityInput } from "../../../../components/QuantityInput";
 type CoffeeWithQuantity = Coffee & { quantity: number };
 
 export function CoffeeList() {
@@ -33,10 +32,10 @@ export function CoffeeList() {
     SetCoffeeList(initialCoffeeList);
   }, []);
 
-  const updateCoffeeQuantity = (name: string, amount: number) => {
+  const updateCoffeeQuantity = (id: number, amount: number) => {
     SetCoffeeList((prev) =>
       prev.map((coffee) =>
-        coffee.name == name
+        coffee.id == id
           ? {
               ...coffee,
               quantity: Math.max(coffee?.quantity + amount, 0),
@@ -47,14 +46,14 @@ export function CoffeeList() {
   };
 
   return (
-    <CoffeeContainer>
+    <Container>
       <Title>Nossos cafés</Title>
 
       <CoffeeGroup>
         {coffeeList.length &&
           coffeeList.map((coffee) => {
             return (
-              <Card key={coffee.name}>
+              <Card key={coffee.id}>
                 <Image>
                   <img
                     src={`/src/assets/images/${coffee.image}.png`}
@@ -63,7 +62,7 @@ export function CoffeeList() {
                 </Image>
                 <TagGroup>
                   {coffee.type.map((type) => {
-                    return <Tag key={type + coffee.name}>{type}</Tag>;
+                    return <Tag key={type + coffee.id}>{type}</Tag>;
                   })}
                 </TagGroup>
                 <Name>{coffee.name}</Name>
@@ -78,19 +77,11 @@ export function CoffeeList() {
                     </Value>
                   </Price>
                   <ActionsGroup>
-                    <Counter>
-                      <CounterButton
-                        onClick={() => updateCoffeeQuantity(coffee.name, -1)}
-                      >
-                        <Minus size={14} />
-                      </CounterButton>
-                      <span>{coffee.quantity}</span>
-                      <CounterButton
-                        onClick={() => updateCoffeeQuantity(coffee.name, 1)}
-                      >
-                        <Plus size={14} />
-                      </CounterButton>
-                    </Counter>
+                    <QuantityInput
+                      quantity={coffee.quantity}
+                      increment={() => updateCoffeeQuantity(coffee.id, 1)}
+                      decrement={() => updateCoffeeQuantity(coffee.id, -1)}
+                    />
                     <Cart>
                       <ShoppingCart size={22} weight="fill" />
                     </Cart>
@@ -100,6 +91,6 @@ export function CoffeeList() {
             );
           })}
       </CoffeeGroup>
-    </CoffeeContainer>
+    </Container>
   );
 }

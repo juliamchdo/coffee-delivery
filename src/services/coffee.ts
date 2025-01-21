@@ -12,10 +12,12 @@ export interface Coffee {
   description: string;
   price: number;
   image: string;
+  id: number;
 }
 
 export const CoffeeOptions: Coffee[] = [
   {
+    id: 1,
     type: [CoffeeType.TRADICIONAL],
     name: "Expresso Tradicional",
     description: "O tradicional café feito com água quente e grãos moídos",
@@ -28,6 +30,7 @@ export const CoffeeOptions: Coffee[] = [
     description: "Expresso diluído, menos intenso que o tradicional",
     price: 9.9,
     image: "american-expresso",
+    id: 2,
   },
   {
     type: [CoffeeType.TRADICIONAL],
@@ -35,6 +38,7 @@ export const CoffeeOptions: Coffee[] = [
     description: "Café expresso tradicional com espuma cremosa",
     price: 9.9,
     image: "creamy-expresso",
+    id: 3,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.GELADO],
@@ -42,6 +46,7 @@ export const CoffeeOptions: Coffee[] = [
     description: "Bebida preparada com café expresso e cubos de gelo",
     price: 9.9,
     image: "cold-expresso",
+    id: 4,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.COM_LEITE],
@@ -49,6 +54,7 @@ export const CoffeeOptions: Coffee[] = [
     description: "Meio a meio de expresso tradicional com leite vaporizado",
     price: 9.9,
     image: "coffee-milk",
+    id: 5,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.COM_LEITE],
@@ -57,6 +63,7 @@ export const CoffeeOptions: Coffee[] = [
       "Uma dose de café expresso com o dobro de leite e espuma cremosa",
     price: 9.9,
     image: "latte",
+    id: 6,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.COM_LEITE],
@@ -65,6 +72,7 @@ export const CoffeeOptions: Coffee[] = [
       "Bebida com canela feita de doses iguais de café, leite e espuma",
     price: 9.9,
     image: "capuccino",
+    id: 7,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.COM_LEITE],
@@ -73,6 +81,7 @@ export const CoffeeOptions: Coffee[] = [
       "Café expresso misturado com um pouco de leite quente e espuma",
     price: 9.9,
     image: "macchiato",
+    id: 8,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.COM_LEITE],
@@ -80,6 +89,7 @@ export const CoffeeOptions: Coffee[] = [
     description: "Café expresso com calda de chocolate, pouco leite e espuma",
     price: 9.9,
     image: "mocaccino",
+    id: 9,
   },
   {
     type: [CoffeeType.ESPECIAL, CoffeeType.COM_LEITE],
@@ -87,6 +97,7 @@ export const CoffeeOptions: Coffee[] = [
     description: "Bebida feita com chocolate dissolvido no leite quente e café",
     price: 9.9,
     image: "hot-chocolate",
+    id: 10,
   },
   {
     type: [CoffeeType.ESPECIAL, CoffeeType.ALCOOLICO, CoffeeType.GELADO],
@@ -95,6 +106,7 @@ export const CoffeeOptions: Coffee[] = [
       "Drink gelado de café expresso com rum, creme de leite e hortelã",
     price: 9.9,
     image: "cuban",
+    id: 11,
   },
   {
     type: [CoffeeType.ESPECIAL],
@@ -102,6 +114,7 @@ export const CoffeeOptions: Coffee[] = [
     description: "Bebida adocicada preparada com café e leite de coco",
     price: 9.9,
     image: "hawaiian",
+    id: 12,
   },
   {
     type: [CoffeeType.ESPECIAL],
@@ -109,6 +122,7 @@ export const CoffeeOptions: Coffee[] = [
     description: "Bebida preparada com grãos de café árabe e especiarias",
     price: 9.9,
     image: "arabic",
+    id: 13,
   },
   {
     type: [CoffeeType.ESPECIAL, CoffeeType.ALCOOLICO],
@@ -116,5 +130,6 @@ export const CoffeeOptions: Coffee[] = [
     description: "Bebida a base de café, uísque irlandês, açúcar e chantilly",
     price: 9.9,
     image: "irish",
+    id: 14,
   },
 ];

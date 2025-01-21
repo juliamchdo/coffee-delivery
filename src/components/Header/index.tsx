@@ -1,11 +1,13 @@
 import {
   BadgesContainer,
   CartBadge,
+  ItemsCounter,
   HeaderContainer,
   LocationBadge,
 } from "./styles";
 import logo from "../../assets/logo.svg";
 import { MapPin, ShoppingCart } from "@phosphor-icons/react";
+import { NavLink } from "react-router-dom";
 export function Header() {
   return (
     <HeaderContainer>
@@ -18,7 +20,10 @@ export function Header() {
         </LocationBadge>
 
         <CartBadge>
-          <ShoppingCart size={22} weight="fill" />
+          <ItemsCounter>3</ItemsCounter>
+          <NavLink to="/checkout" title="Carrinho">
+            <ShoppingCart size={22} weight="fill" color="#C47F17" />
+          </NavLink>
         </CartBadge>
       </BadgesContainer>
     </HeaderContainer>

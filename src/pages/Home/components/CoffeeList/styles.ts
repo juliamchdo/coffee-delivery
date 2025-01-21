@@ -1,13 +1,12 @@
 import styled from "styled-components";
 
-export const CoffeeContainer = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
 
   width: 100%;
-  padding: 0 5rem;
   margin-top: 9.375rem;
 `;
 
@@ -113,30 +112,11 @@ export const ActionsGroup = styled.div`
   gap: 0.5rem;
 `;
 
-export const Counter = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  background: ${(props) => props.theme["base-button"]};
-  color: ${(props) => props.theme["base-title"]};
-  border-radius: 6px;
-  padding: 0.5rem;
-  font-size: 1rem;
-`;
-
-export const CounterButton = styled.span`
-  color: ${(props) => props.theme["purple"]};
-
-  &:hover {
-    color: ${(props) => props.theme["purple-dark"]};
-  }
-`;
-
-export const Cart = styled.div`
+export const Cart = styled.button`
   background: ${(props) => props.theme["purple-dark"]};
   color: ${(props) => props.theme["white"]};
   padding: 0.5rem;
+  border: 0;
   border-radius: 6px;
   line-height: 0;
   transition: all 0.2s;
