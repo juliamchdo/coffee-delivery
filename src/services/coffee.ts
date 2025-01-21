@@ -13,6 +13,7 @@ export interface Coffee {
   price: number;
   image: string;
   id: number;
+  quantity?: number;
 }
 
 export const CoffeeOptions: Coffee[] = [

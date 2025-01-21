@@ -8,7 +8,11 @@ import {
 import logo from "../../assets/logo.svg";
 import { MapPin, ShoppingCart } from "@phosphor-icons/react";
 import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContext";
 export function Header() {
+  const { quantity } = useContext(CartContext);
+
   return (
     <HeaderContainer>
       <img src={logo} alt="" />
@@ -20,7 +24,7 @@ export function Header() {
         </LocationBadge>
 
         <CartBadge>
-          <ItemsCounter>3</ItemsCounter>
+          {quantity > 0 && <ItemsCounter>{quantity}</ItemsCounter>}
           <NavLink to="/checkout" title="Carrinho">
             <ShoppingCart size={22} weight="fill" color="#C47F17" />
           </NavLink>

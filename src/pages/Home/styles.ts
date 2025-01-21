@@ -8,7 +8,7 @@ export const HomeContainer = styled.main`
   margin-top: 8rem;
 `;
 
-export const Banner = styled.div`
+export const HeroContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;

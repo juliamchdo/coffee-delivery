@@ -1,7 +1,7 @@
 import {
   HomeContainer,
   Info,
-  Banner,
+  HeroContainer,
   Subtitle,
   Title,
   ItensGroup,
@@ -18,7 +18,7 @@ import { CoffeeList } from "./components/CoffeeList";
 export function Home() {
   return (
     <HomeContainer>
-      <Banner>
+      <HeroContainer>
         <Info>
           <Title>Encontre o café perfeito para qualquer hora do dia</Title>
           <Subtitle>
@@ -58,7 +58,7 @@ export function Home() {
         </Info>
 
         <img src={CoffeeCup} alt="Coffee Delivery Cup" />
-      </Banner>
+      </HeroContainer>
       <CoffeeList />
     </HomeContainer>
   );
