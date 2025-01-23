@@ -11,7 +11,7 @@ interface CartContextProps {
 
 export const CartContext = createContext({} as CartContextData);
 
-export function CartContextProvider({ children }: CartContextProps) {
+export const CartContextProvider = ({ children }: CartContextProps) => {
   const [quantity, setQuantity] = useState(0);
   const updateQuantity = (quantity: number) => {
     setQuantity(quantity);
@@ -21,4 +21,4 @@ export function CartContextProvider({ children }: CartContextProps) {
       {children}
     </CartContext.Provider>
   );
-}
+};

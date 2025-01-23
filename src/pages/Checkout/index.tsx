@@ -1,17 +1,18 @@
 import {
-  FormCard,
-  CheckoutContainer,
-  Title,
-  FormTitle,
-  OrderForm,
-  Input,
+  Container,
   FormGroup,
-  PaymentCard,
-  OrderSummary,
-  OrderItems,
+  AddressContainer,
+  AddressHeader,
+  AddressForm,
+  PaymentContainer,
+  PaymentHeader,
+  PaymentOptions,
+  CartContainer,
+  CartItem,
+  CartInfo,
+  Address,
+  Cart,
 } from "./styles";
-
-import coffee from "../../assets/images/american-expresso.png";
 
 import {
   Bank,
@@ -20,74 +21,171 @@ import {
   MapPinLine,
   Money,
 } from "@phosphor-icons/react";
+import { useEffect, useState } from "react";
+import { QuantityInput } from "../../components/QuantityInput";
+import { Coffee } from "../../services/coffee";
+import { TextInput } from "../../components/TextInput";
+import { RadioButton } from "../../components/RadioButton";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
-export function Checkout() {
+type CoffeeWithQuantity = Coffee & { quantity: number };
+
+const CheckoutFormValidationSchema = z.object({
+  cep: z.string().min(2).max(50),
+  street: z.string().min(5).max(100),
+  number: z.string().min(1),
+  complement: z.string(),
+  neighborhood: z.string().min(3).max(50),
+  city: z.string().min(3).max(50),
+  state: z.string().min(2).max(2),
+});
+
+export const Checkout = () => {
+  const { register, handleSubmit, watch } = useForm({
+    resolver: zodResolver(CheckoutFormValidationSchema),
+  });
+
+  const [selectedCoffeeList, setSelectedCoffeeList] = useState<
+    CoffeeWithQuantity[]
+  >([]);
+
+  const [selectedPaymentOption, setSelectedPaymentOption] = useState("");
+
+  useEffect(() => {
+    const coffeeList = localStorage.getItem(
+      "@coffee-delivery:selected-coffee-list"
+    );
+    if (coffeeList) {
+      setSelectedCoffeeList(JSON.parse(coffeeList));
+    }
+  }, []);
+
+  const getTotalItemPrice = (coffee: CoffeeWithQuantity) => {
+    return (coffee.quantity * coffee.price).toFixed(2).replace(".", ",");
+  };
+
   return (
-    <CheckoutContainer>
-      <OrderForm>
-        <Title>Complete seu pedido</Title>
-        <FormCard>
-          <FormTitle>
-            <MapPinLine size={22} color="#C47F17" />
+    <Container>
+      <AddressContainer>
+        <h2>Complete seu pedido</h2>
+
+        <Address>
+          <AddressHeader>
+            <MapPinLine size={24} />
 
             <div>
-              <h3>Endereço de Entrega</h3>
+              <span>Endereço de entrega</span>
               <p>Informe o endereço onde deseja receber seu pedido</p>
             </div>
-          </FormTitle>
+          </AddressHeader>
 
-          <Input placeholder="CEP" type="text" width={40} />
-          <Input placeholder="Rua" type="text" width={100} />
+          <AddressForm>
+            <TextInput
+              type="number"
+              placeholder="CEP"
+              width="40%"
+              {...register("cep")}
+            />
+            <TextInput placeholder="Rua" width="100%" {...register("street")} />
 
-          <FormGroup>
-            <Input placeholder="Número" type="text" width={40} />
-            <Input placeholder="Complemento" type="text" width={60} />
-          </FormGroup>
+            <FormGroup>
+              <TextInput
+                type="number"
+                placeholder="Número"
+                width="40%"
+                {...register("number")}
+              />
+              <TextInput
+                placeholder="Complemento"
+                optional
+                width="60%"
+                {...register("complement")}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <Input placeholder="Bairro" type="text" width={44} />
-            <Input placeholder="Cidade" type="text" width={54} />
-            <Input placeholder="UF" type="text" width={10} />
-          </FormGroup>
-        </FormCard>
+            <FormGroup>
+              <TextInput
+                placeholder="Bairro"
+                width="44%"
+                {...register("neighborhood")}
+              />
+              <TextInput
+                placeholder="Cidade"
+                width="54%"
+                {...register("city")}
+              />
+              <TextInput placeholder="UF" width="10%" {...register("state")} />
+            </FormGroup>
+          </AddressForm>
+        </Address>
 
-        <FormCard>
-          <FormTitle>
-            <CurrencyDollar size={22} color="#8047F8" />
-
+        <PaymentContainer>
+          <PaymentHeader>
+            <CurrencyDollar size={24} />
             <div>
-              <h3>Pagamento</h3>
+              <span>Pagamento</span>
               <p>
                 O pagamento é feito na entrega. Escolha a forma que deseja pagar
               </p>
             </div>
-          </FormTitle>
-          <FormGroup>
-            <PaymentCard>
-              <CreditCard size={22} color="#8047F8" />
-              <p>CARTÃO DE CRÉDITO</p>
-            </PaymentCard>
+          </PaymentHeader>
+          <PaymentOptions>
+            <RadioButton
+              isSelected={selectedPaymentOption === "credit"}
+              onClick={() => setSelectedPaymentOption("credit")}
+            >
+              <CreditCard size={24} />
+              <span>Cartão de Crédito</span>
+            </RadioButton>
+            <RadioButton
+              isSelected={selectedPaymentOption === "debit"}
+              onClick={() => setSelectedPaymentOption("debit")}
+            >
+              <Bank size={24} />
+              <span>Cartão de Débito</span>
+            </RadioButton>
+            <RadioButton
+              isSelected={selectedPaymentOption === "cash"}
+              onClick={() => setSelectedPaymentOption("cash")}
+            >
+              <Money size={24} />
+              <span>Dinheiro</span>
+            </RadioButton>
+          </PaymentOptions>
+        </PaymentContainer>
+      </AddressContainer>
 
-            <PaymentCard>
-              <Bank size={22} color="#8047F8" />
-              <p>CARTÃO DE DÉBITO</p>
-            </PaymentCard>
-            <PaymentCard>
-              <Money size={22} color="#8047F8" />
-              <p>DINHEIRO</p>
-            </PaymentCard>
-          </FormGroup>
-        </FormCard>
-      </OrderForm>
+      <CartContainer>
+        <h2>Cafés selecionados</h2>
 
-      <OrderSummary>
-        <OrderItems>
-          <img src={coffee} alt="" />
-          <div>
-            <p>Expresso tradicional</p>
-          </div>
-        </OrderItems>
-      </OrderSummary>
-    </CheckoutContainer>
+        <Cart>
+          {selectedCoffeeList &&
+            selectedCoffeeList.map((coffee) => {
+              return (
+                <CartItem key={coffee.id}>
+                  <CartInfo>
+                    <img
+                      src={`src/assets/images/${coffee.image}.png`}
+                      alt={coffee.name}
+                    />
+
+                    <div>
+                      <span>{coffee.name}</span>
+                      <QuantityInput
+                        quantity={coffee.quantity}
+                        increment={() => {}}
+                        decrement={() => {}}
+                      />
+                    </div>
+                  </CartInfo>
+                  <span>{getTotalItemPrice(coffee)}</span>
+                </CartItem>
+              );
+            })}
+        </Cart>
+      </CartContainer>
+    </Container>
   );
-}
+};
