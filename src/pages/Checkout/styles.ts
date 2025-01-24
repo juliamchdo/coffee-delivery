@@ -25,11 +25,11 @@ export const CheckoutContainer = styled.div`
 `;
 
 export const AddressContainer = styled(CheckoutContainer)`
-  width: 60%;
+  width: 55%;
 `;
 
 export const CartContainer = styled(CheckoutContainer)`
-  width: 40%;
+  width: 45%;
 `;
 
 export const Card = styled.div`
@@ -144,7 +144,6 @@ export const CartItem = styled.div`
 
   border-bottom: 1px solid ${(props) => props.theme["base-button"]};
   width: 100%;
-  gap: 3.125rem;
 
   &:not(:first-child) {
     padding: 1.5rem 0;
@@ -183,28 +182,65 @@ export const CartInfo = styled.div`
   }
 `;
 
-export const RemoveButton = styled.button``;
-
-export const ButtonsGroup = styled.div`
+export const CartTotal = styled.div`
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 1.5rem;
+
+  div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    p {
+      font-size: 0.875rem;
+      color: ${(props) => props.theme["base-text"]};
+    }
+    &:last-child {
+      span,
+      p {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: ${(props) => props.theme["base-subtitle"]};
+      }
+    }
+  }
 `;
 
-export const Button = styled.button`
+export const CartTotalPrice = styled.span`
+  color: ${(props) => props.theme["base-text"]};
+  font-size: 1rem;
+`;
+
+export const RemoveButton = styled.button`
   display: flex;
   align-items: center;
+  gap: 0.25rem;
   padding: 0.5rem;
-  border-radius: 6px;
-  gap: 0.5rem;
-
   background: ${(props) => props.theme["base-button"]};
   color: ${(props) => props.theme["base-text"]};
-  border: 0;
-  transition: all 0.2s;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  transition: background 0.2s;
+
+  svg {
+    color: ${(props) => props.theme["purple"]};
+  }
 
   &:hover {
     background: ${(props) => props.theme["base-hover"]};
     color: ${(props) => props.theme["base-subtitle"]};
   }
+`;
+
+export const ButtonsGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;

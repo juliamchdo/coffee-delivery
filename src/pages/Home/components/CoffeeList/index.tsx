@@ -57,7 +57,9 @@ export function CoffeeList() {
 
   return (
     <Container>
-      <Title>Nossos cafés</Title>
+      <Title>
+        <h2>Nossos cafés</h2>
+      </Title>
 
       <CoffeeGroup>
         {coffeeList.length &&

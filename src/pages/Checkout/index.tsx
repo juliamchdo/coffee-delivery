@@ -12,6 +12,10 @@ import {
   CartInfo,
   Address,
   Cart,
+  RemoveButton,
+  ButtonsGroup,
+  CartTotal,
+  CartTotalPrice,
 } from "./styles";
 
 import {
@@ -20,6 +24,7 @@ import {
   CurrencyDollar,
   MapPinLine,
   Money,
+  Trash,
 } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { QuantityInput } from "../../components/QuantityInput";
@@ -29,6 +34,7 @@ import { RadioButton } from "../../components/RadioButton";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { ConfirmButton } from "../../components/ConfirmButton";
 
 type CoffeeWithQuantity = Coffee & { quantity: number };
 
@@ -173,17 +179,44 @@ export const Checkout = () => {
 
                     <div>
                       <span>{coffee.name}</span>
-                      <QuantityInput
-                        quantity={coffee.quantity}
-                        increment={() => {}}
-                        decrement={() => {}}
-                      />
+                      <ButtonsGroup>
+                        <QuantityInput
+                          quantity={coffee.quantity}
+                          increment={() => {}}
+                          decrement={() => {}}
+                        />
+                        <RemoveButton>
+                          <Trash size={22} />
+                          REMOVER
+                        </RemoveButton>
+                      </ButtonsGroup>
                     </div>
                   </CartInfo>
-                  <span>{getTotalItemPrice(coffee)}</span>
+                  <span>R$ {getTotalItemPrice(coffee)}</span>
                 </CartItem>
               );
             })}
+
+          <CartTotal>
+            <div>
+              <p>Total de itens</p>
+              <CartTotalPrice>R$ 29,70</CartTotalPrice>
+            </div>
+
+            <div>
+              <p>Entrega</p>
+              <CartTotalPrice>R$ 3,50</CartTotalPrice>
+            </div>
+
+            <div>
+              <p>Total</p>
+              <span>R$33,20</span>
+            </div>
+            <ConfirmButton
+              onClick={() => console.log("oi")}
+              text="CONFIRMAR PEDIDO"
+            />
+          </CartTotal>
         </Cart>
       </CartContainer>
     </Container>
