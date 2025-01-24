@@ -35,6 +35,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ConfirmButton } from "../../components/ConfirmButton";
+import { FormatCurrency } from "../../utils/format-currency";
 
 type CoffeeWithQuantity = Coffee & { quantity: number };
 
@@ -49,6 +50,11 @@ const CheckoutFormValidationSchema = z.object({
 });
 
 export const Checkout = () => {
+  const DELIVERY_FEE = 3.5;
+
+  const [totalItemsPrice, setTotalItemsPrice] = useState(0);
+  const [totalOrderPrice, setTotalOrderPrice] = useState(0);
+
   const { register, handleSubmit, watch } = useForm({
     resolver: zodResolver(CheckoutFormValidationSchema),
   });
@@ -59,6 +65,19 @@ export const Checkout = () => {
 
   const [selectedPaymentOption, setSelectedPaymentOption] = useState("");
 
+  const getTotalCoffeePrice = (coffee: CoffeeWithQuantity) => {
+    return coffee.quantity * coffee.price;
+  };
+
+  useEffect(() => {
+    const totalItems = selectedCoffeeList.reduce((total, coffee) => {
+      return total + coffee.price * coffee.quantity;
+    }, 0);
+
+    setTotalItemsPrice(totalItems);
+    setTotalOrderPrice(totalItems + DELIVERY_FEE);
+  }, []);
+
   useEffect(() => {
     const coffeeList = localStorage.getItem(
       "@coffee-delivery:selected-coffee-list"
@@ -67,10 +86,6 @@ export const Checkout = () => {
       setSelectedCoffeeList(JSON.parse(coffeeList));
     }
   }, []);
-
-  const getTotalItemPrice = (coffee: CoffeeWithQuantity) => {
-    return (coffee.quantity * coffee.price).toFixed(2).replace(".", ",");
-  };
 
   return (
     <Container>
@@ -192,7 +207,7 @@ export const Checkout = () => {
                       </ButtonsGroup>
                     </div>
                   </CartInfo>
-                  <span>R$ {getTotalItemPrice(coffee)}</span>
+                  <span>R$ {getTotalCoffeePrice(coffee)}</span>
                 </CartItem>
               );
             })}
@@ -200,17 +215,17 @@ export const Checkout = () => {
           <CartTotal>
             <div>
               <p>Total de itens</p>
-              <CartTotalPrice>R$ 29,70</CartTotalPrice>
+              <CartTotalPrice>{FormatCurrency(totalItemsPrice)}</CartTotalPrice>
             </div>
 
             <div>
               <p>Entrega</p>
-              <CartTotalPrice>R$ 3,50</CartTotalPrice>
+              <CartTotalPrice>{FormatCurrency(DELIVERY_FEE)}</CartTotalPrice>
             </div>
 
             <div>
               <p>Total</p>
-              <span>R$33,20</span>
+              <span>{FormatCurrency(totalOrderPrice)}</span>
             </div>
             <ConfirmButton
               onClick={() => console.log("oi")}
