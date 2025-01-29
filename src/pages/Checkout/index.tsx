@@ -26,9 +26,8 @@ import {
   Money,
   Trash,
 } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { QuantityInput } from "../../components/QuantityInput";
-import { Coffee } from "../../services/coffee";
 import { TextInput } from "../../components/TextInput";
 import { RadioButton } from "../../components/RadioButton";
 import { useForm } from "react-hook-form";
@@ -36,8 +35,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { FormatCurrency } from "../../utils/format-currency";
-
-type CoffeeWithQuantity = Coffee & { quantity: number };
+import { Coffee } from "../../cart/reducer";
+import { CartContext } from "../../context/CartContext";
 
 const CheckoutFormValidationSchema = z.object({
   cep: z.string().min(2).max(50),
@@ -52,6 +51,10 @@ const CheckoutFormValidationSchema = z.object({
 export const Checkout = () => {
   const DELIVERY_FEE = 3.5;
 
+  const { cart, incrementItem, decrementItem, removetItem } =
+    useContext(CartContext);
+
+  const [coffeTotalPrice, setCoffeeTotalPrice] = useState(0);
   const [totalItemsPrice, setTotalItemsPrice] = useState(0);
   const [totalOrderPrice, setTotalOrderPrice] = useState(0);
 
@@ -59,33 +62,32 @@ export const Checkout = () => {
     resolver: zodResolver(CheckoutFormValidationSchema),
   });
 
-  const [selectedCoffeeList, setSelectedCoffeeList] = useState<
-    CoffeeWithQuantity[]
-  >([]);
-
   const [selectedPaymentOption, setSelectedPaymentOption] = useState("");
 
-  const getTotalCoffeePrice = (coffee: CoffeeWithQuantity) => {
-    return coffee.quantity * coffee.price;
+  const getTotalCoffeePrice = (coffee: Coffee) => {
+    return (coffee.quantity * coffee.price).toFixed(2).replace(".", ",");
+  };
+
+  const increment = (coffeeId: number) => {
+    incrementItem(coffeeId);
+  };
+
+  const decrement = (coffeeId: number) => {
+    decrementItem(coffeeId);
+  };
+
+  const removeItemFromCart = (coffeeId: number) => {
+    removetItem(coffeeId);
   };
 
   useEffect(() => {
-    const totalItems = selectedCoffeeList.reduce((total, coffee) => {
+    const totalItems = cart.reduce((total, coffee) => {
       return total + coffee.price * coffee.quantity;
     }, 0);
 
     setTotalItemsPrice(totalItems);
     setTotalOrderPrice(totalItems + DELIVERY_FEE);
-  }, []);
-
-  useEffect(() => {
-    const coffeeList = localStorage.getItem(
-      "@coffee-delivery:selected-coffee-list"
-    );
-    if (coffeeList) {
-      setSelectedCoffeeList(JSON.parse(coffeeList));
-    }
-  }, []);
+  }, [cart]);
 
   return (
     <Container>
@@ -182,8 +184,8 @@ export const Checkout = () => {
         <h2>Cafés selecionados</h2>
 
         <Cart>
-          {selectedCoffeeList &&
-            selectedCoffeeList.map((coffee) => {
+          {cart &&
+            cart.map((coffee) => {
               return (
                 <CartItem key={coffee.id}>
                   <CartInfo>
@@ -197,10 +199,12 @@ export const Checkout = () => {
                       <ButtonsGroup>
                         <QuantityInput
                           quantity={coffee.quantity}
-                          increment={() => {}}
-                          decrement={() => {}}
+                          increment={() => increment(coffee.id)}
+                          decrement={() => decrement(coffee.id)}
                         />
-                        <RemoveButton>
+                        <RemoveButton
+                          onClick={() => removeItemFromCart(coffee.id)}
+                        >
                           <Trash size={22} />
                           REMOVER
                         </RemoveButton>

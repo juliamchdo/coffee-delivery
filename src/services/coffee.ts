@@ -1,20 +1,4 @@
-enum CoffeeType {
-  TRADICIONAL = "TRADICIONAL",
-  GELADO = "GELADO",
-  COM_LEITE = "COM LEITE",
-  ALCOOLICO = "ALCOÓLICO",
-  ESPECIAL = "ESPECIAL",
-}
-
-export interface Coffee {
-  type: CoffeeType[];
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  id: number;
-  quantity?: number;
-}
+import { Coffee, CoffeeType } from "../cart/reducer";
 
 export const CoffeeOptions: Coffee[] = [
   {

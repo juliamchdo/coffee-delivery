@@ -9,7 +9,7 @@ export const Container = styled.div`
   margin-top: 9.375rem;
 `;
 
-export const Title = styled.h2`
+export const Title = styled.div`
   display: flex;
   align-items: flex-start;
   width: 100%;

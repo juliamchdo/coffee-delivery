@@ -15,7 +15,9 @@ export function Header() {
 
   return (
     <HeaderContainer>
-      <img src={logo} alt="" />
+      <NavLink to="/" title="Home">
+        <img src={logo} alt="" />
+      </NavLink>
 
       <BadgesContainer>
         <LocationBadge>

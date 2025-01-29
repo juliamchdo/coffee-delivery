@@ -1,6 +1,5 @@
 import { ShoppingCart } from "@phosphor-icons/react";
 import { QuantityInput } from "../../../../components/QuantityInput";
-import { Coffee } from "../../../../services/coffee";
 import {
   ActionsGroup,
   Cart,
@@ -15,15 +14,15 @@ import {
   TagGroup,
   Value,
 } from "./styles";
+import { Coffee, CoffeeType } from "../../../../cart/reducer";
 
 interface CoffeeCardProps {
-  coffee: CoffeeWithQuantity;
+  coffee: Coffee;
   increment: () => void;
   decrement: () => void;
   updateCartQuantity: () => void;
 }
 
-type CoffeeWithQuantity = Coffee & { quantity: number };
 export function CoffeeCard({
   coffee,
   increment,
@@ -46,7 +45,7 @@ export function CoffeeCard({
         />
       </Image>
       <TagGroup>
-        {coffee.type.map((type) => {
+        {coffee.type.map((type: CoffeeType) => {
           return <Tag key={type + coffee.id}>{type}</Tag>;
         })}
       </TagGroup>

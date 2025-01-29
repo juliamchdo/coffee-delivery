@@ -1,29 +1,15 @@
 import { Container, CoffeeGroup, Title } from "./styles";
 import { useContext, useEffect, useState } from "react";
-import { CoffeeOptions, Coffee } from "../../../../services/coffee";
+import { CoffeeOptions } from "../../../../services/coffee";
 import { CartContext } from "../../../../context/CartContext";
 import { CoffeeCard } from "../CoffeeCard";
-type CoffeeWithQuantity = Coffee & { quantity: number };
+import { Coffee } from "../../../../cart/reducer";
 
 export function CoffeeList() {
-  const [coffeeList, SetCoffeeList] = useState<CoffeeWithQuantity[]>([]);
-  const [selectedCoffee, setSelectedCoffee] = useState<CoffeeWithQuantity[]>(
-    []
-  );
-  const { updateQuantity } = useContext(CartContext);
+  const [coffeeList, SetCoffeeList] = useState<Coffee[]>([]);
+  const { updateQuantity, addItemToCart, cart } = useContext(CartContext);
 
-  useEffect(() => {
-    const initialCoffeeList = CoffeeOptions.map((coffee) => ({
-      ...coffee,
-      quantity: 0,
-    }));
-    SetCoffeeList(initialCoffeeList);
-  }, []);
-
-  const handleCoffeeQuantity = (
-    selectedCoffee: CoffeeWithQuantity,
-    amount: number
-  ) => {
+  const handleCoffeeQuantity = (selectedCoffee: Coffee, amount: number) => {
     SetCoffeeList((prev) =>
       prev.map((coffee) =>
         coffee.id == selectedCoffee.id
@@ -36,24 +22,21 @@ export function CoffeeList() {
     );
   };
 
-  const handleCartItems = (coffee: CoffeeWithQuantity) => {
-    updateQuantity(coffeeList.reduce((acc, curr) => acc + curr.quantity, 0));
-
-    setSelectedCoffee((prev) => {
-      const exists = prev.some((c) => c.id === coffee.id);
-      if (exists) {
-        return prev.map((c) => (c.id === coffee.id ? coffee : c));
-      }
-      return [...prev, coffee];
-    });
+  const handleCartItems = (coffee: Coffee) => {
+    addItemToCart(coffee);
   };
 
   useEffect(() => {
-    localStorage.setItem(
-      "@coffee-delivery:selected-coffee-list",
-      JSON.stringify(selectedCoffee)
-    );
-  }, [selectedCoffee]);
+    updateQuantity(cart.reduce((acc, curr) => acc + curr.quantity, 0));
+  }, [cart]);
+
+  useEffect(() => {
+    const initialCoffeeList = CoffeeOptions.map((coffee) => ({
+      ...coffee,
+      quantity: 0,
+    }));
+    SetCoffeeList(initialCoffeeList);
+  }, []);
 
   return (
     <Container>
