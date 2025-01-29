@@ -1,5 +1,5 @@
 import { createContext, useEffect, useReducer, useState } from "react";
-import { Coffee } from "../cart/reducer";
+import { CartState, Coffee } from "../cart/reducer";
 interface CartContextData {
   cart: Coffee[];
   quantity: number;
@@ -8,6 +8,7 @@ interface CartContextData {
   incrementItem: (coffeeId: number) => void;
   decrementItem: (coffeeId: number) => void;
   removetItem: (coffeeId: number) => void;
+  checkoutOrder: (data: any) => void;
 }
 
 interface CartContextProps {
@@ -16,62 +17,78 @@ interface CartContextProps {
 
 export const CartContext = createContext({} as CartContextData);
 
+const initialState: CartState = {
+  cart: [],
+  order: [],
+};
+
 export const CartContextProvider = ({ children }: CartContextProps) => {
-  const [cartState, dispatch] = useReducer(
-    (state: Coffee[], action: any) => {
-      if (action.type === "ADD_ITEM_TO_CART") {
-        const isAlreadyAdded = state.some(
+  const cartReducer = (state: CartState, action: any): CartState => {
+    switch (action.type) {
+      case "ADD_ITEM_TO_CART": {
+        const isAlreadyAdded = state.cart.some(
           (item) => item.id === action.payload.coffee.id
         );
 
-        if (isAlreadyAdded) {
-          return state.map((c) =>
-            c.id === action.payload.coffee.id ? action.payload.coffee : c
-          );
-        }
+        const updatedCart = isAlreadyAdded
+          ? state.cart.map((c) =>
+              c.id === action.payload.coffee.id ? action.payload.coffee : c
+            )
+          : [...state.cart, action.payload.coffee];
 
-        return [...state, action.payload.coffee];
+        return { ...state, cart: updatedCart };
       }
 
-      if (action.type === "INCREMENT_ITEM") {
-        return state.map((c) =>
+      case "INCREMENT_ITEM": {
+        const updatedCart = state.cart.map((c) =>
           c.id === action.payload.coffeeId
             ? { ...c, quantity: c.quantity + 1 }
             : c
         );
+        return { ...state, cart: updatedCart };
       }
 
-      if (action.type === "DECREMENT_ITEM") {
-        return state.map((c) =>
+      case "DECREMENT_ITEM": {
+        const updatedCart = state.cart.map((c) =>
           c.id === action.payload.coffeeId && c.quantity > 1
             ? { ...c, quantity: c.quantity - 1 }
             : c
         );
+        return { ...state, cart: updatedCart };
       }
 
-      if (action.type === "REMOVE_ITEM_FROM_CART") {
-        return state.filter((c) => c.id !== action.payload.coffeeId);
+      case "REMOVE_ITEM_FROM_CART": {
+        const updatedCart = state.cart.filter(
+          (c) => c.id !== action.payload.coffeeId
+        );
+        return { ...state, cart: updatedCart };
       }
 
-      return state;
-    },
-    [],
-    () => {
-      return JSON.parse(
-        localStorage.getItem("@coffee-delivery:cart") || "[]"
-      ) as Coffee[];
+      case "CHECKOUT_ORDER": {
+        return { cart: [], order: action.payload };
+      }
+
+      default:
+        return state;
     }
-  );
+  };
 
+  const [cartState, dispatch] = useReducer(cartReducer, initialState, () => {
+    const savedCart = localStorage.getItem("@coffee-delivery:cart");
+    return savedCart ? JSON.parse(savedCart) : initialState;
+  });
   const [quantity, setQuantity] = useState(0);
-  const cart = cartState;
+  const { cart } = cartState;
 
   const updateQuantity = (quantity: number) => {
     setQuantity(quantity);
   };
 
   const addItemToCart = (coffee: Coffee) => {
-    dispatch({ type: "ADD_ITEM_TO_CART", payload: { coffee } });
+    dispatch({
+      type: "ADD_ITEM_TO_CART",
+      payload: { coffee },
+    });
   };
 
   const incrementItem = (coffeeId: number) => {
@@ -86,7 +103,12 @@ export const CartContextProvider = ({ children }: CartContextProps) => {
     dispatch({ type: "REMOVE_ITEM_FROM_CART", payload: { coffeeId } });
   };
 
+  const checkoutOrder = (data: any) => {
+    dispatch({ type: "CHECKOUT_ORDER", payload: { data } });
+  };
+
   useEffect(() => {
+    console.log("cartt", cartState);
     localStorage.setItem("@coffee-delivery:cart", JSON.stringify(cartState));
   }, [cartState]);
 
@@ -100,6 +122,7 @@ export const CartContextProvider = ({ children }: CartContextProps) => {
         incrementItem,
         decrementItem,
         removetItem,
+        checkoutOrder,
       }}
     >
       {children}

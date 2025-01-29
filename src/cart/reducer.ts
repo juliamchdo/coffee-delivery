@@ -20,8 +20,8 @@ export interface Coffee {
 }
 
 export interface CartState {
-  items: Coffee[];
-  totalItems: number;
+  cart: Coffee[];
+  order: [];
 }
 
 // export function cartReducer(state: any, action: Actions) {

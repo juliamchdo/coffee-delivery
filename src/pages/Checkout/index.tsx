@@ -48,17 +48,19 @@ const CheckoutFormValidationSchema = z.object({
   state: z.string().min(2).max(2),
 });
 
+type CheckoutFormData = Zod.infer<typeof CheckoutFormValidationSchema>;
+
 export const Checkout = () => {
   const DELIVERY_FEE = 3.5;
 
-  const { cart, incrementItem, decrementItem, removetItem } =
+  const { cart, incrementItem, decrementItem, removetItem, checkoutOrder } =
     useContext(CartContext);
 
   const [coffeTotalPrice, setCoffeeTotalPrice] = useState(0);
   const [totalItemsPrice, setTotalItemsPrice] = useState(0);
   const [totalOrderPrice, setTotalOrderPrice] = useState(0);
 
-  const { register, handleSubmit, watch } = useForm({
+  const { register, handleSubmit, watch } = useForm<CheckoutFormData>({
     resolver: zodResolver(CheckoutFormValidationSchema),
   });
 
@@ -78,6 +80,10 @@ export const Checkout = () => {
 
   const removeItemFromCart = (coffeeId: number) => {
     removetItem(coffeeId);
+  };
+
+  const handleCheckoutOrder = (data: CheckoutFormData) => {
+    checkoutOrder(data);
   };
 
   useEffect(() => {
@@ -104,7 +110,10 @@ export const Checkout = () => {
             </div>
           </AddressHeader>
 
-          <AddressForm>
+          <AddressForm
+            id="checkout"
+            onSubmit={handleSubmit(handleCheckoutOrder)}
+          >
             <TextInput
               type="number"
               placeholder="CEP"
@@ -232,7 +241,8 @@ export const Checkout = () => {
               <span>{FormatCurrency(totalOrderPrice)}</span>
             </div>
             <ConfirmButton
-              onClick={() => console.log("oi")}
+              type="submit"
+              form="checkout"
               text="CONFIRMAR PEDIDO"
             />
           </CartTotal>
