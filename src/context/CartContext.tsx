@@ -1,6 +1,13 @@
 import { createContext, useEffect, useReducer, useState } from "react";
-import { CartState, Coffee, OrderData } from "../cart/reducer";
+import { cartReducer, CartState, Coffee, OrderData } from "../cart/reducer";
 import { useNavigate } from "react-router-dom";
+import {
+  addItemToCartAction,
+  checkoutOrderAction,
+  decrementQuantityAction,
+  incrementQuantityAction,
+  removeItemFromCartAction,
+} from "../cart/actions";
 interface CartContextData {
   cart: Coffee[];
   order: OrderData;
@@ -37,58 +44,6 @@ export const CartContextProvider = ({ children }: CartContextProps) => {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(0);
 
-  const cartReducer = (state: CartState, action: any): CartState => {
-    switch (action.type) {
-      case "ADD_ITEM_TO_CART": {
-        const isAlreadyAdded = state.cart.some(
-          (item) => item.id === action.payload.coffee.id
-        );
-
-        const updatedCart = isAlreadyAdded
-          ? state.cart.map((c) =>
-              c.id === action.payload.coffee.id ? action.payload.coffee : c
-            )
-          : [...state.cart, action.payload.coffee];
-
-        return { ...state, cart: updatedCart };
-      }
-
-      case "INCREMENT_ITEM": {
-        const updatedCart = state.cart.map((c) =>
-          c.id === action.payload.coffeeId
-            ? { ...c, quantity: c.quantity + 1 }
-            : c
-        );
-        return { ...state, cart: updatedCart };
-      }
-
-      case "DECREMENT_ITEM": {
-        const updatedCart = state.cart.map((c) =>
-          c.id === action.payload.coffeeId && c.quantity > 1
-            ? { ...c, quantity: c.quantity - 1 }
-            : c
-        );
-        return { ...state, cart: updatedCart };
-      }
-
-      case "REMOVE_ITEM_FROM_CART": {
-        const updatedCart = state.cart.filter(
-          (c) => c.id !== action.payload.coffeeId
-        );
-        return { ...state, cart: updatedCart };
-      }
-
-      case "CHECKOUT_ORDER": {
-        setQuantity(0);
-        navigate("/success");
-        return { cart: [], order: action.payload.data };
-      }
-
-      default:
-        return state;
-    }
-  };
-
   const [cartState, dispatch] = useReducer(cartReducer, initialState, () => {
     const savedCart = localStorage.getItem("@coffee-delivery:cart");
     return savedCart ? JSON.parse(savedCart) : initialState;
@@ -100,25 +55,23 @@ export const CartContextProvider = ({ children }: CartContextProps) => {
   };
 
   const addItemToCart = (coffee: Coffee) => {
-    dispatch({
-      type: "ADD_ITEM_TO_CART",
-      payload: { coffee },
-    });
+    dispatch(addItemToCartAction(coffee));
   };
 
   const incrementItem = (coffeeId: number) => {
-    dispatch({ type: "INCREMENT_ITEM", payload: { coffeeId } });
+    dispatch(incrementQuantityAction(coffeeId));
   };
 
   const decrementItem = (coffeeId: number) => {
-    dispatch({ type: "DECREMENT_ITEM", payload: { coffeeId } });
+    dispatch(decrementQuantityAction(coffeeId));
   };
 
   const removetItem = (coffeeId: number) => {
-    dispatch({ type: "REMOVE_ITEM_FROM_CART", payload: { coffeeId } });
+    dispatch(removeItemFromCartAction(coffeeId));
   };
 
   const checkoutOrder = (data: any) => {
+    dispatch(checkoutOrderAction(data));
     dispatch({ type: "CHECKOUT_ORDER", payload: { data } });
     setQuantity(0);
     navigate("/success");

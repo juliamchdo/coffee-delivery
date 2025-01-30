@@ -9,12 +9,22 @@ import {
 import { useTheme } from "styled-components";
 
 import CartImage from "../../assets/checkout-cart.svg";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 
 export function OrderSuccess() {
   const { order } = useContext(CartContext);
+  const [paymentMethod, setPaymentMethod] = useState("");
 
+  useEffect(() => {
+    const payment: { [key: string]: string } = {
+      debit: "Débito",
+      credit: "Crédito",
+      cash: "Dinheiro",
+    };
+
+    setPaymentMethod(payment[order.selectedPaymentOption]);
+  }, []);
   const theme = useTheme();
   return (
     <Container>
@@ -54,7 +64,7 @@ export function OrderSuccess() {
               <Money size={20} style={{ background: theme["yellow-dark"] }} />
               <div>
                 <span>Pagamento na entrega</span>
-                <strong>{order.selectedPaymentOption}</strong>
+                <strong>{paymentMethod}</strong>
               </div>
             </div>
           </InfoContent>

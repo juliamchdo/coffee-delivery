@@ -18,38 +18,41 @@ export type Actions =
 export function addItemToCartAction(coffee: Coffee) {
   return {
     type: ActionType.ADD_ITEM_TO_CART,
-    payload: coffee,
+    payload: { coffee },
   };
 }
 
-export function removeItemFromCartAction(data: number) {
+export function removeItemFromCartAction(coffeeId: number) {
   return {
     type: ActionType.REMOVE_ITEM_FROM_CART,
     payload: {
-      data,
+      coffeeId,
     },
   };
 }
 
-export function incrementQuantityAction(data: number) {
+export function incrementQuantityAction(coffeeId: number) {
   return {
     type: ActionType.INCREMENT_ITEM,
     payload: {
-      data,
+      coffeeId,
     },
   };
 }
-export function decrementQuantityAction(data: number) {
+export function decrementQuantityAction(coffeeId: number) {
   return {
     type: ActionType.DECREMENT_ITEM,
     payload: {
-      data,
+      coffeeId,
     },
   };
 }
 
-export function CHECKOUT_ORDER() {
+export function checkoutOrderAction(data: OrderData) {
   return {
     type: ActionType.CHECKOUT_ORDER,
+    payload: {
+      data,
+    },
   };
 }
