@@ -26,6 +26,10 @@ export const CheckoutContainer = styled.div`
 
 export const AddressContainer = styled(CheckoutContainer)`
   width: 55%;
+
+  form {
+    width: 100%;
+  }
 `;
 
 export const CartContainer = styled(CheckoutContainer)`
@@ -243,4 +247,10 @@ export const ButtonsGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+`;
+
+export const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 4px;
 `;

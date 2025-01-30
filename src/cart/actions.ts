@@ -1,61 +1,55 @@
-import { Coffee } from "./reducer";
+import { Coffee, OrderData } from "./reducer";
 
 export enum ActionType {
   ADD_ITEM_TO_CART = "ADD_ITEM_TO_CART",
   REMOVE_ITEM_FROM_CART = "REMOVE_ITEM_FROM_CART",
-  INCREMENT_ITEM_QUANTITY = "INCREMENT_ITEM_QUANTITY",
-  DECREMENT_ITEM_QUANTITY = "DECREMENT_ITEM_QUANTITY",
-  FINISH_ORDER = "FINISH_ORDER",
+  INCREMENT_ITEM = "INCREMENT_ITEM",
+  DECREMENT_ITEM = "DECREMENT_ITEM",
+  CHECKOUT_ORDER = "CHECKOUT_ORDER",
 }
 
 export type Actions =
-  | { type: ActionType.ADD_ITEM_TO_CART; payload: { item: Coffee } }
-  | {
-      type:
-        | ActionType.REMOVE_ITEM_FROM_CART
-        | ActionType.INCREMENT_ITEM_QUANTITY
-        | ActionType.DECREMENT_ITEM_QUANTITY
-        | ActionType.FINISH_ORDER;
-      payload: { item: Coffee };
-    };
+  | { type: "ADD_ITEM_TO_CART"; payload: Coffee }
+  | { type: "INCREMENT_ITEM"; payload: { id: number } }
+  | { type: "DECREMENT_ITEM"; payload: { id: number } }
+  | { type: "REMOVE_ITEM_FROM_CART"; payload: { id: number } }
+  | { type: "CHECKOUT_ORDER"; payload: OrderData };
 
-export function addItemToCartAction(item: Coffee) {
+export function addItemToCartAction(coffee: Coffee) {
   return {
     type: ActionType.ADD_ITEM_TO_CART,
-    payload: {
-      item,
-    },
+    payload: coffee,
   };
 }
 
-export function removeItemFromCartAction(itemId: number) {
+export function removeItemFromCartAction(data: number) {
   return {
     type: ActionType.REMOVE_ITEM_FROM_CART,
     payload: {
-      itemId,
+      data,
     },
   };
 }
 
-export function incrementQuantityAction(itemId: number) {
+export function incrementQuantityAction(data: number) {
   return {
-    type: ActionType.INCREMENT_ITEM_QUANTITY,
+    type: ActionType.INCREMENT_ITEM,
     payload: {
-      itemId,
+      data,
     },
   };
 }
-export function decrementQuantityAction(itemId: number) {
+export function decrementQuantityAction(data: number) {
   return {
-    type: ActionType.DECREMENT_ITEM_QUANTITY,
+    type: ActionType.DECREMENT_ITEM,
     payload: {
-      itemId,
+      data,
     },
   };
 }
 
-export function FINISH_ORDER() {
+export function CHECKOUT_ORDER() {
   return {
-    type: ActionType.FINISH_ORDER,
+    type: ActionType.CHECKOUT_ORDER,
   };
 }

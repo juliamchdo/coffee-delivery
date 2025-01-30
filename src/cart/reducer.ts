@@ -1,5 +1,5 @@
 import { Coffee } from "@phosphor-icons/react";
-import { Actions, ActionType } from "./actions";
+import { Actions } from "./actions";
 
 export enum CoffeeType {
   TRADICIONAL = "TRADICIONAL",
@@ -7,6 +7,17 @@ export enum CoffeeType {
   COM_LEITE = "COM LEITE",
   ALCOOLICO = "ALCOÓLICO",
   ESPECIAL = "ESPECIAL",
+}
+
+export interface OrderData {
+  cep: string;
+  street: string;
+  number: number;
+  complement: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  selectedPaymentOption: string;
 }
 
 export interface Coffee {
@@ -21,26 +32,51 @@ export interface Coffee {
 
 export interface CartState {
   cart: Coffee[];
-  order: [];
+  order: OrderData;
 }
 
-// export function cartReducer(state: any, action: Actions) {
-//   console.log("state", state);
-//   console.log("action", action);
-//   switch (action.type) {
-//     case ActionType.ADD_ITEM_TO_CART:
-//       return {
-//         ...state,
-//         cart: state.items.some((item) => item.id === action.payload.item.id)
-//           ? state.items.map((item) =>
-//               item.id === action.payload.item.id
-//                 ? {
-//                     ...item,
-//                     quantity: item.quantity + action.payload.item.quantity,
-//                   }
-//                 : item
-//             )
-//           : [...state.items, action.payload.item],
-//       };
-//   }
-// }
+export function cartReducer(state: CartState, action: Actions) {
+  switch (action.type) {
+    case "ADD_ITEM_TO_CART": {
+      const isAlreadyAdded = state.cart.some(
+        (item) => item.id === action.payload.id
+      );
+
+      const updatedCart = isAlreadyAdded
+        ? state.cart.map((c) =>
+            c.id === action.payload.id ? action.payload : c
+          )
+        : [...state.cart, action.payload];
+
+      return { ...state, cart: updatedCart };
+    }
+
+    case "INCREMENT_ITEM": {
+      const updatedCart = state.cart.map((c) =>
+        c.id === action.payload.id ? { ...c, quantity: c.quantity + 1 } : c
+      );
+      return { ...state, cart: updatedCart };
+    }
+
+    case "DECREMENT_ITEM": {
+      const updatedCart = state.cart.map((c) =>
+        c.id === action.payload.id && c.quantity > 1
+          ? { ...c, quantity: c.quantity - 1 }
+          : c
+      );
+      return { ...state, cart: updatedCart };
+    }
+
+    case "REMOVE_ITEM_FROM_CART": {
+      const updatedCart = state.cart.filter((c) => c.id !== action.payload.id);
+      return { ...state, cart: updatedCart };
+    }
+
+    case "CHECKOUT_ORDER": {
+      return { cart: [], order: action.payload };
+    }
+
+    default:
+      return state;
+  }
+}

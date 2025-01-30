@@ -9,8 +9,12 @@ import {
 import { useTheme } from "styled-components";
 
 import CartImage from "../../assets/checkout-cart.svg";
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContext";
 
 export function OrderSuccess() {
+  const { order } = useContext(CartContext);
+
   const theme = useTheme();
   return (
     <Container>
@@ -26,9 +30,15 @@ export function OrderSuccess() {
               <MapPin size={20} style={{ background: theme.purple }} />
               <div>
                 <span>
-                  Entrega em <strong>Rua João Daniel Martinelli, 102 </strong>
+                  Entrega em{" "}
+                  <strong>
+                    {order.street}, {order.number}{" "}
+                  </strong>
                 </span>
-                <span> Farrapos - Porto Alegre, RS</span>
+                <span>
+                  {" "}
+                  {order.neighborhood} - {order.city}, {order.state}
+                </span>
               </div>
             </div>
 
@@ -44,7 +54,7 @@ export function OrderSuccess() {
               <Money size={20} style={{ background: theme["yellow-dark"] }} />
               <div>
                 <span>Pagamento na entrega</span>
-                <strong>Cartão de Crédito</strong>
+                <strong>{order.selectedPaymentOption}</strong>
               </div>
             </div>
           </InfoContent>

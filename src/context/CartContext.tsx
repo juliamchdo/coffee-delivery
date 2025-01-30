@@ -1,7 +1,9 @@
 import { createContext, useEffect, useReducer, useState } from "react";
-import { CartState, Coffee } from "../cart/reducer";
+import { CartState, Coffee, OrderData } from "../cart/reducer";
+import { useNavigate } from "react-router-dom";
 interface CartContextData {
   cart: Coffee[];
+  order: OrderData;
   quantity: number;
   updateQuantity: (quantity: number) => void;
   addItemToCart: (coffee: Coffee) => void;
@@ -19,10 +21,22 @@ export const CartContext = createContext({} as CartContextData);
 
 const initialState: CartState = {
   cart: [],
-  order: [],
+  order: {
+    cep: "",
+    street: "",
+    number: 0,
+    complement: "",
+    neighborhood: "",
+    city: "",
+    state: "",
+    selectedPaymentOption: "",
+  },
 };
 
 export const CartContextProvider = ({ children }: CartContextProps) => {
+  const navigate = useNavigate();
+  const [quantity, setQuantity] = useState(0);
+
   const cartReducer = (state: CartState, action: any): CartState => {
     switch (action.type) {
       case "ADD_ITEM_TO_CART": {
@@ -65,7 +79,9 @@ export const CartContextProvider = ({ children }: CartContextProps) => {
       }
 
       case "CHECKOUT_ORDER": {
-        return { cart: [], order: action.payload };
+        setQuantity(0);
+        navigate("/success");
+        return { cart: [], order: action.payload.data };
       }
 
       default:
@@ -77,8 +93,7 @@ export const CartContextProvider = ({ children }: CartContextProps) => {
     const savedCart = localStorage.getItem("@coffee-delivery:cart");
     return savedCart ? JSON.parse(savedCart) : initialState;
   });
-  const [quantity, setQuantity] = useState(0);
-  const { cart } = cartState;
+  const { cart, order } = cartState;
 
   const updateQuantity = (quantity: number) => {
     setQuantity(quantity);
@@ -105,10 +120,11 @@ export const CartContextProvider = ({ children }: CartContextProps) => {
 
   const checkoutOrder = (data: any) => {
     dispatch({ type: "CHECKOUT_ORDER", payload: { data } });
+    setQuantity(0);
+    navigate("/success");
   };
 
   useEffect(() => {
-    console.log("cartt", cartState);
     localStorage.setItem("@coffee-delivery:cart", JSON.stringify(cartState));
   }, [cartState]);
 
@@ -119,6 +135,7 @@ export const CartContextProvider = ({ children }: CartContextProps) => {
         updateQuantity,
         addItemToCart,
         cart,
+        order,
         incrementItem,
         decrementItem,
         removetItem,

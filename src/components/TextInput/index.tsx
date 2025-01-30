@@ -1,13 +1,15 @@
 import React, { useState, forwardRef } from "react";
-import { Container } from "./styles";
+import { Box, Container, ErrorMessage } from "./styles";
+import { FieldError } from "react-hook-form";
 
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   optional?: boolean;
   width?: string;
+  error?: FieldError;
 }
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ optional, width, ...rest }, ref) => {
+  ({ optional, width, error, ...rest }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
 
     const onBlur = () => {
@@ -19,19 +21,22 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     };
 
     return (
-      <Container
-        data-state={isFocused ? "focused" : "blurred"}
-        style={{ width }}
-      >
-        <input
-          type="text"
-          ref={ref} // Passa o ref para o input interno
-          {...rest}
-          onBlur={onBlur}
-          onFocus={onFocus}
-        />
-        {optional && <span>Opcional</span>}
-      </Container>
+      <Box style={{ width }}>
+        <Container data-state={isFocused ? "focused" : "blurred"}>
+          <input
+            type="text"
+            ref={ref}
+            {...rest}
+            onBlur={onBlur}
+            onFocus={onFocus}
+          />
+          {optional && <span>Opcional</span>}
+        </Container>
+
+        {error?.message && (
+          <ErrorMessage role="alert">{error.message}</ErrorMessage>
+        )}
+      </Box>
     );
   }
 );

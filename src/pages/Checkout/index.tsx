@@ -26,7 +26,7 @@ import {
   Money,
   Trash,
 } from "@phosphor-icons/react";
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { QuantityInput } from "../../components/QuantityInput";
 import { TextInput } from "../../components/TextInput";
 import { RadioButton } from "../../components/RadioButton";
@@ -39,13 +39,13 @@ import { Coffee } from "../../cart/reducer";
 import { CartContext } from "../../context/CartContext";
 
 const CheckoutFormValidationSchema = z.object({
-  cep: z.string().min(2).max(50),
-  street: z.string().min(5).max(100),
-  number: z.string().min(1),
+  cep: z.string().min(8, "O CEP é obrigatório e deve conter 8 dígitos").max(8),
+  street: z.string().min(5, "Informe um endereço válido").max(100),
+  number: z.string().min(1, "Informe o número do endereço"),
   complement: z.string(),
-  neighborhood: z.string().min(3).max(50),
-  city: z.string().min(3).max(50),
-  state: z.string().min(2).max(2),
+  neighborhood: z.string().min(3, "Informe o bairro corretamenete").max(50),
+  city: z.string().min(3, "Informe a cidade corretamente").max(50),
+  state: z.string().min(2, "Informe o estado corretamente").max(2),
 });
 
 type CheckoutFormData = Zod.infer<typeof CheckoutFormValidationSchema>;
@@ -56,11 +56,14 @@ export const Checkout = () => {
   const { cart, incrementItem, decrementItem, removetItem, checkoutOrder } =
     useContext(CartContext);
 
-  const [coffeTotalPrice, setCoffeeTotalPrice] = useState(0);
   const [totalItemsPrice, setTotalItemsPrice] = useState(0);
   const [totalOrderPrice, setTotalOrderPrice] = useState(0);
 
-  const { register, handleSubmit, watch } = useForm<CheckoutFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CheckoutFormData>({
     resolver: zodResolver(CheckoutFormValidationSchema),
   });
 
@@ -83,7 +86,10 @@ export const Checkout = () => {
   };
 
   const handleCheckoutOrder = (data: CheckoutFormData) => {
-    checkoutOrder(data);
+    if (selectedPaymentOption) {
+      const formData = { ...data, selectedPaymentOption };
+      checkoutOrder(formData);
+    }
   };
 
   useEffect(() => {
@@ -118,17 +124,26 @@ export const Checkout = () => {
               type="number"
               placeholder="CEP"
               width="40%"
+              error={errors.cep}
               {...register("cep")}
             />
-            <TextInput placeholder="Rua" width="100%" {...register("street")} />
+
+            <TextInput
+              placeholder="Rua"
+              width="100%"
+              error={errors.street}
+              {...register("street")}
+            />
 
             <FormGroup>
               <TextInput
                 type="number"
                 placeholder="Número"
                 width="40%"
+                error={errors.number}
                 {...register("number")}
               />
+
               <TextInput
                 placeholder="Complemento"
                 optional
@@ -141,14 +156,23 @@ export const Checkout = () => {
               <TextInput
                 placeholder="Bairro"
                 width="44%"
+                error={errors.neighborhood}
                 {...register("neighborhood")}
               />
+
               <TextInput
                 placeholder="Cidade"
                 width="54%"
+                error={errors.city}
                 {...register("city")}
               />
-              <TextInput placeholder="UF" width="10%" {...register("state")} />
+
+              <TextInput
+                placeholder="UF"
+                width="10%"
+                error={errors.state}
+                {...register("state")}
+              />
             </FormGroup>
           </AddressForm>
         </Address>
@@ -163,6 +187,9 @@ export const Checkout = () => {
               </p>
             </div>
           </PaymentHeader>
+          {/* {!selectedPaymentOption && (
+            <ErrorMessage>Informe um método de pagamento</ErrorMessage>
+          )} */}
           <PaymentOptions>
             <RadioButton
               isSelected={selectedPaymentOption === "credit"}

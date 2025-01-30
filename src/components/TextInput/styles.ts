@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+export const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+`;
+
 export const Container = styled.div`
   background: ${(props) => props.theme["base-input"]};
   border: 1px solid ${(props) => props.theme["base-button"]};
@@ -30,4 +36,10 @@ export const Container = styled.div`
     outline: 0;
     box-shadow: 0 0 0 2px ${(props) => props.theme["yellow-dark"]};
   }
+`;
+
+export const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 4px;
 `;
