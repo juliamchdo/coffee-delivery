@@ -19,7 +19,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "@typescript-eslint/no-explicit-any": "off"
 
   },
   "include": ["vite.config.ts"]

@@ -1,5 +1,4 @@
 import { Coffee } from "@phosphor-icons/react";
-import { Actions } from "./actions";
 
 export enum CoffeeType {
   TRADICIONAL = "TRADICIONAL",

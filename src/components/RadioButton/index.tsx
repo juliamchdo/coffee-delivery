@@ -6,7 +6,7 @@ interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
-  ({ isSelected, children, ...rest }, ref) => {
+  ({ isSelected, children, ...rest }) => {
     return (
       <Container data-state={isSelected} {...rest}>
         {children}

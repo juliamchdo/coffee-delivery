@@ -8,6 +8,7 @@ export const CoffeeOptions: Coffee[] = [
     description: "O tradicional café feito com água quente e grãos moídos",
     price: 9.9,
     image: "traditional-expresso",
+    quantity: 0,
   },
   {
     type: [CoffeeType.TRADICIONAL],
@@ -16,6 +17,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "american-expresso",
     id: 2,
+    quantity: 0,
   },
   {
     type: [CoffeeType.TRADICIONAL],
@@ -24,6 +26,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "creamy-expresso",
     id: 3,
+    quantity: 0,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.GELADO],
@@ -32,6 +35,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "cold-expresso",
     id: 4,
+    quantity: 0,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.COM_LEITE],
@@ -40,6 +44,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "coffee-milk",
     id: 5,
+    quantity: 0,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.COM_LEITE],
@@ -49,6 +54,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "latte",
     id: 6,
+    quantity: 0,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.COM_LEITE],
@@ -58,6 +64,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "capuccino",
     id: 7,
+    quantity: 0,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.COM_LEITE],
@@ -67,6 +74,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "macchiato",
     id: 8,
+    quantity: 0,
   },
   {
     type: [CoffeeType.TRADICIONAL, CoffeeType.COM_LEITE],
@@ -75,6 +83,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "mocaccino",
     id: 9,
+    quantity: 0,
   },
   {
     type: [CoffeeType.ESPECIAL, CoffeeType.COM_LEITE],
@@ -83,6 +92,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "hot-chocolate",
     id: 10,
+    quantity: 0,
   },
   {
     type: [CoffeeType.ESPECIAL, CoffeeType.ALCOOLICO, CoffeeType.GELADO],
@@ -92,6 +102,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "cuban",
     id: 11,
+    quantity: 0,
   },
   {
     type: [CoffeeType.ESPECIAL],
@@ -100,6 +111,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "hawaiian",
     id: 12,
+    quantity: 0,
   },
   {
     type: [CoffeeType.ESPECIAL],
@@ -108,6 +120,7 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "arabic",
     id: 13,
+    quantity: 0,
   },
   {
     type: [CoffeeType.ESPECIAL, CoffeeType.ALCOOLICO],
@@ -116,5 +129,6 @@ export const CoffeeOptions: Coffee[] = [
     price: 9.9,
     image: "irish",
     id: 14,
+    quantity: 0,
   },
 ];
