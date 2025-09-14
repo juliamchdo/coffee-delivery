@@ -12,7 +12,7 @@ import {
 
 import { ShoppingCart, Package, Timer, Coffee } from "@phosphor-icons/react";
 
-import CoffeeCup from "../../assets/images/coffee-cup.png";
+import CoffeeCup from "/assets/images/coffee-cup.png";
 import { CoffeeList } from "./components/CoffeeList";
 
 export function Home() {

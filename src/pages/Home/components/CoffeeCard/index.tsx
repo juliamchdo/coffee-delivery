@@ -40,7 +40,7 @@ export function CoffeeCard({
     <Container>
       <Image>
         <img
-          src={`/src/assets/images/${coffee.image}.png`}
+          src={`/assets/images/${coffee.image}.png`}
           alt="Expresso Tradicional"
         />
       </Image>

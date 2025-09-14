@@ -226,7 +226,7 @@ export const Checkout = () => {
                 <CartItem key={coffee.id}>
                   <CartInfo>
                     <img
-                      src={`src/assets/images/${coffee.image}.png`}
+                      src={`/assets/images/${coffee.image}.png`}
                       alt={coffee.name}
                     />
 

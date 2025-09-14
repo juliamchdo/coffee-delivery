@@ -5,7 +5,7 @@ import {
   HeaderContainer,
   LocationBadge,
 } from "./styles";
-import logo from "../../assets/logo.svg";
+import logo from "/assets/logo.svg";
 import { MapPin, ShoppingCart } from "@phosphor-icons/react";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";

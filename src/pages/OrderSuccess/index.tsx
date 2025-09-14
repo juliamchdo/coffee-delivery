@@ -8,7 +8,7 @@ import {
 } from "./styles";
 import { useTheme } from "styled-components";
 
-import CartImage from "../../assets/checkout-cart.svg";
+import CartImage from "/assets/checkout-cart.svg";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 
